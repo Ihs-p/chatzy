@@ -50,6 +50,6 @@ app.get('*', (req, res) => {
 })
 
 server.listen(PORT, () => {
-    console.log('app listening on port:', PORT);
+    console.log('app listening on port:', PORT,process.env.NODE_ENV);
     connectDB();
 });
