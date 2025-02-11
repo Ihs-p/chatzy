@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser')
 const { app, server } = require('./lib/socket')
 
 const PORT = process.env.PORT
+const path = require('path')    
+
+const __dirname = path.resolve()
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -28,6 +31,15 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', require('./routes/auth.route'))
 app.use('/api/messages', require('./routes/message.route'))
+
+
+if( process.env.NODE_ENV === 'production' ) {
+    app.use(express.static(path.join(__dirname, '../frontend/dist')))
+}
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
+})
 
 server.listen(PORT, () => {
     console.log('app listening on port port:', PORT)
